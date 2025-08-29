@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vcabulario básico UD3</title>
+  <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+    }
+    .sidebar {
+      width: 200px;
+      margin-right: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 16px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar li {
+      margin: 5px 0;
+    }
+    .sidebar button {
+      width: 100%;
+      padding: 8px;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      text-align: left;
+      border-radius: 3px;
+    }
+    .sidebar button:hover {
+      background-color: #e0e0e0;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #character-target-div {
+      border: 1px solid #ccc;
+      background-color: white;
+      margin: 20px 0;
+    }
+    .nav-buttons button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 0 10px;
+    }
+    .nav-buttons button:hover {
+      background-color: #45a049;
+    }
+    #current-word {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+   
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+        max-height: none;
+      }
+      #character-target-div {
+        width: 100px !important;
+        height: 100px !important;
+      }
+      .nav-buttons button {
+        width: 45%;
+        margin: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <div class="sidebar">
+      <h3>Selecciona un carácter</h3>
+      <ul id="character-menu"></ul>
+    </div>
+
+    
+    <div class="main-content">
+      <div id="current-word"></div>
+      <div id="character-target-div"></div>
+      <div class="nav-buttons">
+        <button id="prev-button">Anterior</button>
+        <button id="next-button">Siguiente</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+const characters = [
+  { char: '一', pinyin: 'yī', spanish: 'uno' },
+  { char: '二', pinyin: 'èr', spanish: 'dos' },
+  { char: '三', pinyin: 'sān', spanish: 'tres' },
+  { char: '四', pinyin: 'sì', spanish: 'cuatro' },
+  { char: '五', pinyin: 'wǔ', spanish: 'cinco' },
+  { char: '六', pinyin: 'liù', spanish: 'seis' },
+  { char: '七', pinyin: 'qī', spanish: 'siete' },
+  { char: '八', pinyin: 'bā', spanish: 'ocho' },
+  { char: '九', pinyin: 'jiǔ', spanish: 'nueve' },
+  { char: '十', pinyin: 'shí', spanish: 'diez' },
+  { char: '是', pinyin: 'shì', spanish: 'ser/estar' },
+  { char: '哪', pinyin: 'nǎ', spanish: 'cuál' },
+  { char: '国', pinyin: 'guó', spanish: 'país' },
+  { char: '人', pinyin: 'rén', spanish: 'persona' },
+];
+
+    let currentIndex = 0;
+    let writer = null;
+
+    
+    function showCharacter(index) {
+      if (index >= characters.length) {
+        index = 0;
+      } else if (index < 0) {
+        index = characters.length - 1;
+      }
+      currentIndex = index;
+      const item = characters[index];
+      
+
+      const targetDiv = document.getElementById('character-target-div');
+      targetDiv.innerHTML = '';
+
+
+      document.getElementById('current-word').textContent = `Carácter: ${item.char} (${item.pinyin} - ${item.spanish})`;
+
+
+      writer = HanziWriter.create('character-target-div', item.char, {
+        width: 150,
+        height: 150,
+        padding: 20,
+        strokeColor: '#000'
+      });
+
+      
+      writer.animateCharacter({
+        onComplete: function() {
+          setTimeout(function() {
+            writer.animateCharacter();
+          }, 1000);
+        }
+      });
+    }
+
+    function generateMenu() {
+      const menu = document.getElementById('character-menu');
+      characters.forEach((item, index) => {
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+        button.textContent = `${item.char} (${item.pinyin})`;
+        button.addEventListener('click', () => showCharacter(index));
+        li.appendChild(button);
+        menu.appendChild(li);
+      });
+    }
+
+    
+    generateMenu();
+    showCharacter(currentIndex);
+
+    
+    document.getElementById('prev-button').addEventListener('click', function() {
+      currentIndex--;
+      showCharacter(currentIndex);
+    });
+
+    document.getElementById('next-button').addEventListener('click', function() {
+      currentIndex++;
+      showCharacter(currentIndex);
+    });
+  </script>
+</body>
+</html>
