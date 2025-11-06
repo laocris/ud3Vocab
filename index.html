@@ -196,6 +196,31 @@
       margin-bottom: 10px;
       cursor: pointer;
     }
+
+    .audio-button {
+          background-color: skyblue;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 13px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .audio-button:hover {
+          background-color: #7dd3fc;
+          transform: scale(1.1);
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .audio-button:active {
+          transform: scale(0.95);
+      }
     
     /* Tablet styles */
     @media (max-width: 768px) {
@@ -413,9 +438,46 @@
   </style>
 </head>
 <body>
+    <audio id="audio-zhong" preload="auto">
+        <source src="./audioUD3/中.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-xi" preload="auto">
+        <source src="./audioUD3/西.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-ban" preload="auto">
+        <source src="./audioUD3/班.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-ya" preload="auto">
+        <source src="./audioUD3/牙.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-shei" preload="auto">
+        <source src="./audioUD3/谁.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-guo" preload="auto">
+        <source src="./audioUD3/国.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-jia" preload="auto">
+        <source src="./audioUD3/家.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-jiao" preload="auto">
+        <source src="./audioUD3/教.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-shou" preload="auto">
+        <source src="./audioUD3/授.m4a" type="audio/mp4">
+    </audio>
+     <audio id="audio-xing" preload="auto">
+        <source src="./audioUD3/姓.m4a" type="audio/mp4">
+    </audio>
+    <audio id="audio-zhi" preload="auto">
+        <source src="./audioUD3/职.m4a" type="audio/mp4">
+    </audio>
+        <audio id="audio-ye" preload="auto">
+        <source src="./audioUD3/业.m4a" type="audio/mp4">
+    </audio>
+
   <div class="container">
     <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰ Menú de Caracteres</button>
-    
+
     <div class="sidebar" id="sidebar">
       <h3>Selecciona un carácter</h3>
       <ul id="character-menu"></ul>
@@ -423,8 +485,11 @@
 
     <div class="main-content">
       <div id="current-word"></div>
-      
+
       <div class="character-display-section">
+          <button class="audio-button" id="audio-button" onclick="playAudio()">
+            🔊
+          </button>
         <div id="character-target-div"></div>
         <button class="replay-button" onclick="replayAnimation()">
           ↻ Repetir animación
@@ -456,18 +521,18 @@
 
   <script>
 const characters = [
-  { char: '中', pinyin: 'zhōng', spanish: 'medio, centro (parte de Zhōngguó: China)'},
-  { char: '西', pinyin: 'xī', spanish: 'oeste (parte de Xībānyá: España)'},
-  { char: '班', pinyin: 'bān', spanish: 'equipo (parte de Xībānyá: España)' },
-  { char: '牙', pinyin: 'yá', spanish: 'diente (parte de Xībānyá: España)' },
-  { char: '谁', pinyin: 'shéi', spanish: 'quién (también pronunciado como shuí)' },
-  { char: '国', pinyin: 'guó', spanish: 'país' },
-  { char: '家', pinyin: 'jiā', spanish: 'casa, familia (parte de guójiā: nación)' },
-  { char: '教', pinyin: 'jiào', spanish: 'enseñar (parte de jiàoshòu: catedrático)' },
-  { char: '授', pinyin: 'shòu', spanish: 'impartir, otorgar (parte de jiàoshòu: catedrático)' },
-  { char: '姓', pinyin: 'xìng', spanish: 'apellidarse' },
-  { char: '职', pinyin: 'zhí', spanish: 'oficio, puesto (parte de zhíyè: ocupación)' },
-  { char: '业', pinyin: 'yè', spanish: 'especialidad, profesión (parte de zhíyè: ocupación)' },
+  { char: '中', pinyin: 'zhōng', spanish: 'medio, centro (parte de Zhōngguó: China)', audioId:'audio-zhong'},
+  { char: '西', pinyin: 'xī', spanish: 'oeste (parte de Xībānyá: España)', audioId:'audio-xi'},
+  { char: '班', pinyin: 'bān', spanish: 'equipo (parte de Xībānyá: España)', audioId:'audio-ban' },
+  { char: '牙', pinyin: 'yá', spanish: 'diente (parte de Xībānyá: España)', audioId:'audio-ya' },
+  { char: '谁', pinyin: 'shéi', spanish: 'quién (también pronunciado como shuí)', audioId:'audio-shei' },
+  { char: '国', pinyin: 'guó', spanish: 'país', audioId:'audio-guo' },
+  { char: '家', pinyin: 'jiā', spanish: 'casa, familia (parte de guójiā: nación)', audioId:'audio-jia' },
+  { char: '教', pinyin: 'jiào', spanish: 'enseñar (parte de jiàoshòu: catedrático)', audioId:'audio-jiao' },
+  { char: '授', pinyin: 'shòu', spanish: 'impartir, otorgar (parte de jiàoshòu: catedrático)', audioId:'audio-shou' },
+  { char: '姓', pinyin: 'xìng', spanish: 'apellidarse', audioId:'audio-xing' },
+  { char: '职', pinyin: 'zhí', spanish: 'oficio, puesto (parte de zhíyè: ocupación)', audioId:'audio-zhi' },
+  { char: '业', pinyin: 'yè', spanish: 'especialidad, profesión (parte de zhíyè: ocupación)', audioId:'audio-ye' },
 ];
 
     let currentIndex = 0;
@@ -665,6 +730,15 @@ const characters = [
         showCharacter(currentIndex);
       }, 250);
     });
+
+
+          function playAudio() {
+            const audioId = characters[currentIndex].audioId;
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.play();
+            }
+        }
   </script>
 </body>
 </html>
